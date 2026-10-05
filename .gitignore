@@ -1,3 +1,7 @@
+# Node / Electron generated dependencies and packages
+node_modules/
+dist/
+
 # Gradle files
 .gradle/
 build/

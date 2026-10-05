@@ -1,0 +1,50 @@
+{
+  "name": "sesli-nota",
+  "version": "1.0.0",
+  "description": "Görme engelli kullanıcılar için klavye odaklı kitap, not ve müzik notası okuyucu.",
+  "main": "src/main.js",
+  "author": "Sesli Nota Geliştiricileri",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron .",
+    "dist": "electron-builder --win nsis --x64",
+    "dist:portable": "electron-builder --win portable --x64",
+    "test": "node --test tests/*.test.js",
+    "lint": "node --check src/main.js && node --check src/preload.js && node --check src/renderer.js"
+  },
+  "dependencies": {
+    "pdfjs-dist": "^6.4.299"
+  },
+  "devDependencies": {
+    "electron": "^44.5.1",
+    "electron-builder": "^26.15.3"
+  },
+  "build": {
+    "appId": "tr.org.seslinota.reader",
+    "productName": "Sesli Nota",
+    "asar": true,
+    "files": [
+      "src/**/*",
+      "package.json",
+      "README.md",
+      "LICENSE"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        }
+      ],
+      "artifactName": "${productName}-${version}-Windows-Setup.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Sesli Nota"
+    }
+  }
+}

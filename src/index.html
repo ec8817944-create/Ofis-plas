@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self'; script-src 'self';" />
+  <title>Sesli Nota — Erişilebilir kitap ve nota okuyucu</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#editor">Metin alanına geç</a>
+  <div id="live-status" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
+  <div id="urgent-status" class="sr-only" role="alert" aria-atomic="true"></div>
+
+  <header class="app-header">
+    <div>
+      <p class="eyebrow">Görme engelli kullanıcılar için</p>
+      <h1>Sesli Nota</h1>
+      <p class="subtitle">Kitap, not ve müzik notası okuyucu</p>
+    </div>
+    <button id="help-button" class="quiet-button" type="button" aria-haspopup="dialog" aria-controls="help-dialog">F1: Yardım ve kısayollar</button>
+  </header>
+
+  <main>
+    <section class="intro" aria-labelledby="what-title">
+      <h2 id="what-title">Çalışma alanı</h2>
+      <p>Bu uygulama fare gerektirmeden kullanılır. Sekme tuşuyla gezinir; her düğmenin işlevi ekran okuyucu tarafından duyurulur.</p>
+    </section>
+
+    <section class="toolbar" aria-label="Belge ve okuma denetimleri">
+      <div class="tool-group" aria-label="Dosya işlemleri">
+        <button id="open-button" class="primary-button" type="button" title="Ctrl+O">Dosya aç <span aria-hidden="true">(Ctrl+O)</span></button>
+        <button id="new-button" type="button" title="Ctrl+N">Yeni not <span aria-hidden="true">(Ctrl+N)</span></button>
+        <button id="save-button" type="button" title="Ctrl+S">Kaydet <span aria-hidden="true">(Ctrl+S)</span></button>
+      </div>
+      <div class="tool-group" aria-label="Sesli okuma">
+        <button id="read-button" class="speak-button" type="button" aria-pressed="false" title="F5">Okumayı başlat <span aria-hidden="true">(F5)</span></button>
+        <button id="selection-button" type="button" title="Ctrl+R">Seçili kısmı oku <span aria-hidden="true">(Ctrl+R)</span></button>
+        <button id="stop-button" type="button">Durdur</button>
+      </div>
+      <label class="rate-control" for="rate-input">Okuma hızı
+        <input id="rate-input" type="range" min="0.5" max="2" step="0.1" value="1" aria-describedby="rate-help" />
+        <output id="rate-output" for="rate-input">Normal</output>
+        <span id="rate-help" class="sr-only">Sol ve sağ ok tuşları ile konuşma hızını değiştirin.</span>
+      </label>
+      <label class="voice-control" for="voice-select">Ses
+        <select id="voice-select">
+          <option value="">Windows varsayılan sesi</option>
+        </select>
+      </label>
+    </section>
+
+    <section class="document-details" aria-label="Açık belge bilgisi">
+      <p><strong>Belge:</strong> <span id="document-name">Yeni, kaydedilmemiş not</span></p>
+      <p><strong>Tür:</strong> <span id="document-format">TXT</span></p>
+      <p id="document-kind">Kendi notunuzu yazmaya başlayabilirsiniz.</p>
+    </section>
+
+    <section class="editor-section" aria-labelledby="editor-title">
+      <div class="section-heading">
+        <h2 id="editor-title">Metin ve not alanı</h2>
+        <span id="word-count" aria-live="off">0 kelime</span>
+      </div>
+      <label class="sr-only" for="editor">Okunacak veya düzenlenecek metin</label>
+      <textarea id="editor" spellcheck="true" placeholder="Notunuzu buraya yazın. Dosya açmak için Ctrl+O, sesli okumayı başlatmak için F5 tuşuna basın." aria-describedby="editor-instructions"></textarea>
+      <p id="editor-instructions" class="hint">Yazdığınız metni Ctrl+S ile TXT veya BRF olarak kaydedebilirsiniz. Metin seçip Ctrl+R ile yalnızca seçimi dinleyebilirsiniz.</p>
+    </section>
+
+    <section class="info-grid" aria-label="Desteklenen dosyalar ve erişilebilirlik bilgileri">
+      <article>
+        <h2>Desteklenen dosyalar</h2>
+        <ul>
+          <li><strong>TXT:</strong> Yazı notları ve kitaplar.</li>
+          <li><strong>BRF:</strong> Braille Ready Format dosyaları.</li>
+          <li><strong>PDF:</strong> Metin katmanı olan PDF kitap ve belgeler.</li>
+          <li><strong>MusicXML ve MIDI:</strong> Do, re, mi olarak seslendirilen müzik notası.</li>
+        </ul>
+      </article>
+      <article>
+        <h2>Önemli bilgi</h2>
+        <p>Taranmış resim PDF'lerde metin tanıma (OCR) bulunmaz. Belgeyi yalnızca yasal olarak edinilmiş veya size ait dosyalardan açın.</p>
+        <p>BRF dosyaları doğrudan görüntülenir. Türkçe Braille kısaltmalarının anlamı dosyanın oluşturulduğu kurala bağlıdır.</p>
+      </article>
+    </section>
+  </main>
+
+  <dialog id="help-dialog" aria-labelledby="help-title">
+    <div class="dialog-content">
+      <h2 id="help-title">Klavye ile kullanım</h2>
+      <p>Sesli Nota, ekran okuyucularla ve yalnızca klavyeyle kullanmak için tasarlanmıştır.</p>
+      <dl>
+        <dt>Ctrl+O</dt><dd>TXT, BRF, PDF, MusicXML veya MIDI dosyası açar.</dd>
+        <dt>Ctrl+N</dt><dd>Yeni boş not oluşturur.</dd>
+        <dt>Ctrl+S</dt><dd>Notu TXT ya da BRF olarak kaydeder.</dd>
+        <dt>F5</dt><dd>Metnin tamamını okur veya okumayı duraklatır.</dd>
+        <dt>Ctrl+R</dt><dd>Metin alanındaki seçimi okur.</dd>
+        <dt>F1</dt><dd>Bu yardım penceresini açar.</dd>
+        <dt>Escape</dt><dd>Açık yardım penceresini kapatır ya da okumayı durdurur.</dd>
+      </dl>
+      <p>Okuma hızı ve ses seçimi çalışma alanındaki kontrollerden değiştirilebilir. Uygulama, Windows'ta yüklü konuşma seslerini otomatik listeler.</p>
+      <button id="close-help" class="primary-button" type="button">Yardımı kapat</button>
+    </div>
+  </dialog>
+
+  <dialog id="save-dialog" aria-labelledby="save-title">
+    <form method="dialog" class="dialog-content" id="save-form">
+      <h2 id="save-title">Notu kaydet</h2>
+      <label for="save-name">Dosya adı</label>
+      <input id="save-name" name="name" type="text" value="Yeni not" required />
+      <fieldset>
+        <legend>Dosya türü</legend>
+        <label><input type="radio" name="save-type" value="txt" checked /> TXT — normal metin</label>
+        <label><input type="radio" name="save-type" value="brf" /> BRF — Braille Ready Format</label>
+      </fieldset>
+      <p class="hint">BRF seçeneği metni UTF-8 BRF dosyası olarak kaydeder. Basılı Braille üretiminde kullanılan özel dönüşüm kuralları için kullandığınız kabartma yazıcının ayarını kontrol edin.</p>
+      <div class="dialog-actions">
+        <button id="cancel-save" type="button">Vazgeç</button>
+        <button class="primary-button" type="submit">Kaydet</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="renderer.js"></script>
+</body>
+</html>
